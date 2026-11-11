@@ -27,27 +27,19 @@ Secuencia de registrar préstamo:
 
 ## Cómo ejecutarlo
 
-Se necesita Java 21 y Maven.
+Hay que tener instalado Java y Maven. Se abre una terminal en la carpeta del proyecto y se escribe:
 
 ```
 mvn spring-boot:run
 ```
 
-La base de datos es H2 y ya trae algunos estudiantes y libros de prueba (el libro 3 ya está prestado).
+Cuando arranca, el programa ya tiene guardados unos estudiantes y unos libros de ejemplo para poder probar.
 
 ## Cómo probarlo
 
-Registrar un préstamo:
+Se puede probar con Postman:
 
-```
-POST http://localhost:8080/api/prestamos
-{"estudianteId": 1, "libroId": 1}
-```
+1. Para pedir un libro prestado se manda un POST a `http://localhost:8080/api/prestamos` con el número del estudiante y del libro, por ejemplo `{"estudianteId": 1, "libroId": 1}`.
+2. Para ver todos los préstamos se hace un GET a `http://localhost:8080/api/prestamos`.
 
-Ver los préstamos:
-
-```
-GET http://localhost:8080/api/prestamos
-```
-
-Si el libro está disponible responde 201, si ya está prestado responde 409 y si el estudiante o el libro no existen responde 404.
+Si el libro se puede prestar, el préstamo se guarda. Si el libro ya está prestado o el estudiante o el libro no existen, el programa avisa y no guarda nada.
