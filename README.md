@@ -1,70 +1,53 @@
-# Taller práctico 7 — SmartLibrary: Registrar préstamo
+# Taller práctico 7 - SmartLibrary
 
-API REST con Spring Boot (Java 21, Maven, Spring Web, Spring Data JPA, Validation y H2) organizada en tres capas: Controller → Service → Repository. Implementa **exactamente** el diagrama de clases por capas y el diagrama de secuencia del caso de uso «Registrar préstamo».
+Proyecto del taller del bloque 7 de Diseño de Software. Es una API hecha en Spring Boot para registrar préstamos de libros a estudiantes. El código está organizado en tres capas: controller, service y repository.
 
-## Entregables
+## Qué hay en el repositorio
 
-| Entregable | Archivo |
-|---|---|
-| Diagramas en Visual Paradigm (los tres en un solo proyecto) | [`diagramas/Taller Bloque 7 SmartLibrary.vpp`](diagramas/Taller%20Bloque%207%20SmartLibrary.vpp) |
-| Diagrama inicial anotado con observaciones | [`diagramas/1-vista-logica-modelo-inicial.png`](diagramas/1-vista-logica-modelo-inicial.png) |
-| Tabla de responsabilidades | [`entregables/1-tabla-de-responsabilidades.md`](entregables/1-tabla-de-responsabilidades.md) |
-| Diagrama de clases por capas | [`diagramas/2-clases-por-capas.png`](diagramas/2-clases-por-capas.png) |
-| Diagrama de secuencia del préstamo | [`diagramas/3-secuencia-registrar-prestamo.png`](diagramas/3-secuencia-registrar-prestamo.png) |
-| Proyecto Spring Boot | carpeta [`src/`](src) y [`pom.xml`](pom.xml) |
-| Evidencias de pruebas | [`entregables/3-evidencias-de-pruebas.md`](entregables/3-evidencias-de-pruebas.md) |
-| Explicación de las decisiones de diseño | [`entregables/2-decisiones-de-diseno.md`](entregables/2-decisiones-de-diseno.md) |
+- `diagramas/Taller Bloque 7 SmartLibrary.vpp`: los diagramas en Visual Paradigm
+- `diagramas/`: las imágenes de los diagramas (modelo inicial, clases por capas y secuencia)
+- `entregables/1-tabla-de-responsabilidades.md`
+- `entregables/2-decisiones-de-diseno.md`
+- `entregables/3-evidencias-de-pruebas.md`
+- `src/`: el código del proyecto
 
 ## Diagramas
 
-### Vista lógica — modelo inicial anotado
+Modelo inicial:
+
 ![Modelo inicial](diagramas/1-vista-logica-modelo-inicial.png)
 
-### Clases por capas
+Clases por capas:
+
 ![Clases por capas](diagramas/2-clases-por-capas.png)
 
-### Secuencia — registrar préstamo
+Secuencia de registrar préstamo:
+
 ![Secuencia](diagramas/3-secuencia-registrar-prestamo.png)
 
-## Del diagrama al código
+## Cómo ejecutarlo
 
-| Diagrama | Paquete / clase |
-|---|---|
-| PrestamoController | `controller/PrestamoController` |
-| PrestamoRequest | `dto/PrestamoRequest` |
-| PrestamoService | `service/PrestamoService` |
-| «Interface» EstudianteRepository, LibroRepository, PrestamoRepository | `repository/*` (solo declaran las operaciones del diagrama) |
-| Estudiante, Libro, Prestamo | `model/*` (`Prestamo` 0..* → 1 `Estudiante` y 0..* → 1 `Libro` con `@ManyToOne`) |
-| LibroNoDisponibleException (mensaje 1.1.8 de la secuencia) | `service/LibroNoDisponibleException` |
+Se necesita Java 21 y Maven.
 
-`SmartLibraryApplication` es solo la clase de arranque que exige Spring Boot.
-
-## Reglas del caso de uso
-
-- **R1**: solo un libro disponible puede prestarse → `Libro.estaDisponible()`, lo verifica `PrestamoService`.
-- **R2**: el préstamo registra estudiante, libro y fecha → constructor de `Prestamo`.
-- **R3**: al prestarlo, el libro deja de estar disponible → `Libro.marcarPrestado()`.
-- **R4**: una solicitud inválida no crea préstamo → `@Transactional` en `registrarPrestamo` y validación `@NotNull` del request.
-
-## Ejecutar
-
-```bash
+```
 mvn spring-boot:run
 ```
 
-Datos de prueba (`data.sql`): estudiantes 1 y 2; libros 1 y 2 disponibles, libro 3 ya prestado.
+La base de datos es H2 y ya trae algunos estudiantes y libros de prueba (el libro 3 ya está prestado).
 
-## Pruebas
+## Cómo probarlo
 
-| Escenario | Petición | Resultado esperado |
-|---|---|---|
-| Préstamo de libro disponible | `POST /api/prestamos {"estudianteId":1,"libroId":1}` | 201 Created |
-| Libro ya prestado | `POST /api/prestamos {"estudianteId":1,"libroId":3}` | 409 Conflict |
-| Estudiante inexistente | `POST /api/prestamos {"estudianteId":99,"libroId":2}` | 404 Not Found |
-| Libro inexistente | `POST /api/prestamos {"estudianteId":1,"libroId":99}` | 404 Not Found |
-| Consulta de préstamos | `GET /api/prestamos` | 200 OK |
+Registrar un préstamo:
 
-```bash
-curl -i -X POST localhost:8080/api/prestamos -H "Content-Type: application/json" -d '{"estudianteId":1,"libroId":1}'
-curl -i localhost:8080/api/prestamos
 ```
+POST http://localhost:8080/api/prestamos
+{"estudianteId": 1, "libroId": 1}
+```
+
+Ver los préstamos:
+
+```
+GET http://localhost:8080/api/prestamos
+```
+
+Si el libro está disponible responde 201, si ya está prestado responde 409 y si el estudiante o el libro no existen responde 404.
