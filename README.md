@@ -2,11 +2,29 @@
 
 API REST con Spring Boot (Java 21, Maven, Spring Web, Spring Data JPA, Validation y H2) organizada en tres capas: Controller → Service → Repository. Implementa **exactamente** el diagrama de clases por capas y el diagrama de secuencia del caso de uso «Registrar préstamo».
 
+## Entregables
+
+| Entregable | Archivo |
+|---|---|
+| Diagramas en Visual Paradigm (los tres en un solo proyecto) | [`diagramas/Taller Bloque 7 SmartLibrary.vpp`](diagramas/Taller%20Bloque%207%20SmartLibrary.vpp) |
+| Diagrama inicial anotado con observaciones | [`diagramas/1-vista-logica-modelo-inicial.png`](diagramas/1-vista-logica-modelo-inicial.png) |
+| Tabla de responsabilidades | [`entregables/1-tabla-de-responsabilidades.md`](entregables/1-tabla-de-responsabilidades.md) |
+| Diagrama de clases por capas | [`diagramas/2-clases-por-capas.png`](diagramas/2-clases-por-capas.png) |
+| Diagrama de secuencia del préstamo | [`diagramas/3-secuencia-registrar-prestamo.png`](diagramas/3-secuencia-registrar-prestamo.png) |
+| Proyecto Spring Boot | carpeta [`src/`](src) y [`pom.xml`](pom.xml) |
+| Evidencias de pruebas | [`entregables/3-evidencias-de-pruebas.md`](entregables/3-evidencias-de-pruebas.md) |
+| Explicación de las decisiones de diseño | [`entregables/2-decisiones-de-diseno.md`](entregables/2-decisiones-de-diseno.md) |
+
 ## Diagramas
 
-| Vista lógica (modelo inicial) | Clases por capas | Secuencia: registrar préstamo |
-|---|---|---|
-| ![](docs/1-vista-logica-modelo-inicial.png) | ![](docs/2-clases-por-capas.png) | ![](docs/3-secuencia-registrar-prestamo.png) |
+### Vista lógica — modelo inicial anotado
+![Modelo inicial](diagramas/1-vista-logica-modelo-inicial.png)
+
+### Clases por capas
+![Clases por capas](diagramas/2-clases-por-capas.png)
+
+### Secuencia — registrar préstamo
+![Secuencia](diagramas/3-secuencia-registrar-prestamo.png)
 
 ## Del diagrama al código
 
